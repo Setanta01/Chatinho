@@ -34,6 +34,7 @@ public class App {
         for (int i = 0; i < numPlayers; i++) {
             System.out.println("\n Jogador " + (i + 1) + " criado com cor " + players[i].cor);
         }
+        int jogadorDaVez = random.nextInt(numPlayers);
 
         System.out.println("\nPressione Enter para iniciar o jogo:");
         scanner.nextLine(); 
@@ -54,13 +55,19 @@ public class App {
 
         // loop principal
         while (jogoAtivo) {
-            int jogadorDaVez = random.nextInt(numPlayers);
-            System.out.println("Vez da Rodada: Player" + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ")!");
+            if(jogadorDaVez != (numPlayers - 1)){
+                jogadorDaVez++;
+            }else{
+                jogadorDaVez = 0;
+            }
+            System.out.println("Vez da Rodada: Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ")!");
             System.out.println("Pressione Enter para jogar os dados...");
             scanner.nextLine();
 
-            int somaDados = random.nextInt(6) + 1 + random.nextInt(6) + 1;
-            System.out.println("Você rolou " + somaDados);
+            int dado1 = random.nextInt(6) + 1;
+            int dado2 = random.nextInt(6) + 1;
+            int somaDados = dado1 + dado2;
+            System.out.println("Você rolou: "+ dado1+ " e "+ dado2 + " totalizando: " + somaDados);
             
             int novaPosicao = players[jogadorDaVez].pos + somaDados;
             if (novaPosicao >= 40) {
