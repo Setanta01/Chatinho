@@ -3,6 +3,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class App {
+
+
+    public static String repeat(String str, int count) {
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < count; i++) {
+        builder.append(str);
+    }
+    return builder.toString();
+}
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
@@ -21,7 +30,7 @@ public class App {
                 System.out.println("Número inválido. O número de players deve ser entre 3 e 6.");
             }
         }
-
+        int sortido = 0;
         players = new Player[numPlayers];
 
         for (int i = 0; i < numPlayers; i++) {
@@ -30,10 +39,23 @@ public class App {
             players[i] = new Player();
             players[i].cor = color;
             players[i].pos = 0;
-            players[i].sorte = random.nextInt(3); // 0, 1 ou 2 para os tipos de sorte
+            players[i].sorte = sortido;  //random.nextInt(3); // 0, 1 ou 2 para os tipos de sorte
             players[i].jogadas = 0;
             players[i].efeito1 = 0;
+            if (sortido < 3){
+                sortido++;
+            }else{
+                sortido = 0;
+            }
         }
+
+        String allColors = String.join(",", 
+            java.util.Arrays.stream(players).map(player -> player.cor).toArray(String[]::new)
+        );
+        int maxLength = allColors.length();
+
+
+
 
         for (int i = 0; i < numPlayers; i++) {
             System.out.println("\n Jogador " + (i + 1) + " criado com cor " + players[i].cor);
@@ -144,50 +166,63 @@ public class App {
             }
             System.out.println("Você rolou: "+ dado1+ " e "+ dado2 + " totalizando: " + somaDados);
 
+
+            
+
+
+
             int novaPosicao = players[jogadorDaVez].pos + somaDados;
             if (novaPosicao >= 40) {
-            players[jogadorDaVez].pos = 40;
-            matriz[0][0] = 40;
-            //System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
+                players[jogadorDaVez].pos = 40;
+                matriz[0][0] = 40;
+                //System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
 
+                System.out.println("\nEstado do tabuleiro:");
                 for (int i = 0; i < matriz.length; i++) {
                     for (int j = 0; j < matriz[i].length; j++) {
                         if (matriz[i][j] != 100) {
                             System.out.print("{");
-                                for (int z = 0; z < numPlayers; z++) {
-                                    if (matriz[i][j] == players[z].pos) {
-                                        String nome = players[z].cor;
-                                        System.out.print(nome);
-                                    }else{
-                                        System.out.print(" ");
+                            StringBuilder colorsInCell = new StringBuilder();
+                            for (int z = 0; z < numPlayers; z++) {
+                                if (matriz[i][j] == players[z].pos) {
+                                    if (colorsInCell.length() > 0) {
+                                        colorsInCell.append(","); // Adiciona vírgula entre as cores
                                     }
+                                    colorsInCell.append(players[z].cor);
                                 }
-                        System.out.print("}       ");
-                    } else {
-                        System.out.print("            "); // Espaço para alinhamento
+                            }
+                            System.out.print(colorsInCell);
+                            // Preenche com espaços para alinhamento
+                            System.out.print(repeat(" ", maxLength - colorsInCell.length()));
+                            System.out.print("}");
+                        } else {
+                            System.out.print(repeat(" ", maxLength + 2)); // Espaço para células com valor 100
+                        }
                     }
-                }
-                System.out.println(); // Quebra de linha
+                    System.out.println(); // Quebra de linha
                 }
 
-            System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
-            for (int x = 0; x <= (numPlayers-1); x++){
-                System.out.println("Jogador " + (x+1) + ", Cor: " + players[x].cor + ", Fez: " + players[x].jogadas + " Jogadas, Posição: " + players[x].pos);
-            }
-            
-                jogoAtivo = false;
-                break;
+                System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
+                for (int x = 0; x <= (numPlayers-1); x++){
+                    System.out.println("Jogador " + (x+1) + ", Cor: " + players[x].cor + ", Fez: " + players[x].jogadas + " Jogadas, Posição: " + players[x].pos);
+                }
+                
+                    jogoAtivo = false;
+                    break;
             }else if (novaPosicao == 10 || novaPosicao == 25 || novaPosicao == 38){
                 players[jogadorDaVez].efeito1 = 1;
             }else if (novaPosicao == 15 || novaPosicao == 5 || novaPosicao == 30){
                 if (players[jogadorDaVez].sorte != 1){
                 System.out.println("Por cair,sem azar, nessa casa avance 3 posições.");
                 novaPosicao = novaPosicao + 3;
+                }else{
+                    System.out.println("Por cair nessa casa,com azar, nada irá acontecer.");
                 }
             }else if (novaPosicao == 13){
                 System.out.println("Por cair na casa de número 13, sua sorte irá mudar");
                 players[jogadorDaVez].sorte = random.nextInt(3);
             }else if (novaPosicao == 17 || novaPosicao == 27) {
+                System.out.println("Por cair em uma casa especial.");
                 System.out.println("Escolha um jogador (sua cor) para voltar ao início do jogo");
                 
                 boolean corValida = false;
@@ -223,26 +258,31 @@ public class App {
             }
             players[jogadorDaVez].pos = novaPosicao;
 
-            System.out.println("\nEstado do tabuleiro:");
-                for (int i = 0; i < matriz.length; i++) {
-                    for (int j = 0; j < matriz[i].length; j++) {
-                        if (matriz[i][j] != 100) {
-                            System.out.print("{");
-                                for (int z = 0; z < numPlayers; z++) {
-                                    if (matriz[i][j] == players[z].pos) {
-                                        String nome = players[z].cor;
-                                        System.out.print(nome);
-                                    }else{
-                                        System.out.print(" ");
-                                    }
-                                }
-                        System.out.print("}       ");
-                    } else {
-                        System.out.print("            "); // Espaço para alinhamento
+
+        System.out.println("\nEstado do tabuleiro:");
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                if (matriz[i][j] != 100) {
+                    System.out.print("{");
+                    StringBuilder colorsInCell = new StringBuilder();
+                    for (int z = 0; z < numPlayers; z++) {
+                        if (matriz[i][j] == players[z].pos) {
+                            if (colorsInCell.length() > 0) {
+                                colorsInCell.append(","); // Adiciona vírgula entre as cores
+                            }
+                            colorsInCell.append(players[z].cor);
+                        }
                     }
+                    System.out.print(colorsInCell);
+                    // Preenche com espaços para alinhamento
+                    System.out.print(repeat(" ", maxLength - colorsInCell.length()));
+                    System.out.print("}");
+                } else {
+                    System.out.print(repeat(" ", maxLength + 2)); // Espaço para células com valor 100
                 }
-                System.out.println(); // Quebra de linha
-                }
+            }
+            System.out.println(); // Quebra de linha
+        }
     
 
 
