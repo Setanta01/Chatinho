@@ -16,14 +16,29 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
         
-        int numPlayers;
+        int numPlayers = 10;
+        String nhac;
+        String zero = "0";
+        String tres = "3";
+        String quatro = "4";
+        String cinco = "5";
+        String seis = "6";
         Player[] players;
         boolean debug = false;
         while (true) {
             System.out.println("Digite quantos players irão jogar, de 3 a 6:");
-            numPlayers = scanner.nextInt();
+            nhac = scanner.next();
+            if (nhac.equals(zero) || nhac.equals(tres) || nhac.equals(quatro) || nhac.equals(cinco) || nhac.equals(seis)){
+            numPlayers = Integer.valueOf(nhac);
+            }
             if (numPlayers == 0){
-                debug = true;
+                if (!debug){
+                    System.out.println("Modo debug ativado");
+                    debug = true;
+                }else{
+                    System.out.println("Modo debug desativado");
+                    debug = false;
+                }
             }else if (numPlayers >= 3 && numPlayers <= 6) {
                 break;
             } else {
