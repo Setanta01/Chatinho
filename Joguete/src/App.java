@@ -6,14 +6,16 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-
+        
         int numPlayers;
         Player[] players;
-
+        boolean debug = false;
         while (true) {
             System.out.println("Digite quantos players irão jogar, de 3 a 6:");
             numPlayers = scanner.nextInt();
-            if (numPlayers >= 3 && numPlayers <= 6) {
+            if (numPlayers == 0){
+                debug = true;
+            }else if (numPlayers >= 3 && numPlayers <= 6) {
                 break;
             } else {
                 System.out.println("Número inválido. O número de players deve ser entre 3 e 6.");
@@ -101,7 +103,26 @@ public class App {
 
 
             RolarDados a = new RolarDados();
+            int dado1,dado2,somaDados;
+            if(debug){
+                System.out.println("digite o valor do primeiro dado");
+                int choice = scanner.nextInt();
+                dado1 = choice;
+                System.out.println("digite o valor do segundo dado");
+                choice = scanner.nextInt();
+                dado2 = choice;
+                somaDados = dado1 + dado2;
+                
+                if (dado1 == dado2){
+                iguais = 1;
+                players[jogadorDaVez].jogadas++;
+                }else{
+                iguais = 0;
+                }
 
+            }
+
+            else{
             if(players[jogadorDaVez].sorte == 2){
                 a = new RolarDadosBons();
             }else if (players[jogadorDaVez].sorte == 1){
@@ -110,9 +131,9 @@ public class App {
                 a = new RolarDados();
             }
             
-            int somaDados = a.rolarDados();
-            int dado1 = a.dado1;
-            int dado2 = a.dado2;
+            somaDados = a.rolarDados();
+            dado1 = a.dado1;
+            dado2 = a.dado2;
             
             if (dado1 == dado2){
                 iguais = 1;
@@ -120,7 +141,7 @@ public class App {
             }else{
                 iguais = 0;
             }
-
+            }
             System.out.println("Você rolou: "+ dado1+ " e "+ dado2 + " totalizando: " + somaDados);
 
             int novaPosicao = players[jogadorDaVez].pos + somaDados;
@@ -129,7 +150,6 @@ public class App {
             matriz[0][0] = 40;
             //System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
 
-                System.out.println("\nEstado do tabuleiro:");
                 for (int i = 0; i < matriz.length; i++) {
                     for (int j = 0; j < matriz[i].length; j++) {
                         if (matriz[i][j] != 100) {
@@ -138,11 +158,13 @@ public class App {
                                     if (matriz[i][j] == players[z].pos) {
                                         String nome = players[z].cor;
                                         System.out.print(nome);
+                                    }else{
+                                        System.out.print(" ");
                                     }
                                 }
                         System.out.print("}       ");
                     } else {
-                        System.out.print("         "); // Espaço para alinhamento
+                        System.out.print("            "); // Espaço para alinhamento
                     }
                 }
                 System.out.println(); // Quebra de linha
@@ -210,11 +232,13 @@ public class App {
                                     if (matriz[i][j] == players[z].pos) {
                                         String nome = players[z].cor;
                                         System.out.print(nome);
+                                    }else{
+                                        System.out.print(" ");
                                     }
                                 }
                         System.out.print("}       ");
                     } else {
-                        System.out.print("         "); // Espaço para alinhamento
+                        System.out.print("            "); // Espaço para alinhamento
                     }
                 }
                 System.out.println(); // Quebra de linha
