@@ -46,17 +46,31 @@ public class App {
         int iguais = 0;
         int ok = 0;
         
-// matriz main
-      //  int[][] matriz = new int[11][11];
-     //   for (int i = 0; i < matriz.length; i++) {
-    //        for (int j = 0; j < matriz[i].length; j++) {
-   //             if (i == 0 || i == matriz.length - 1 || j == 0 || j == matriz[i].length - 1) {
-   //                 matriz[i][j] = 1;
-  //              } else {
-  //                  matriz[i][j] = 0;
-  //              }
-  //          }
-  //      } 
+        int[][] matriz = new int[11][11];
+        int pos = 0;
+
+        // Preenche as bordas do tabuleiro em sentido horário
+        for (int j = 0; j < matriz[0].length; j++) { // Linha superior (da esquerda para a direita)
+            matriz[0][j] = pos++;
+        }
+        for (int i = 1; i < matriz.length; i++) { // Coluna direita (de cima para baixo)
+            matriz[i][10] = pos++;
+        }
+        for (int j = 9; j >= 0; j--) { // Linha inferior (da direita para a esquerda)
+            matriz[10][j] = pos++;
+        }
+        for (int i = 9; i > 0; i--) { // Coluna esquerda (de baixo para cima)
+            matriz[i][0] = pos++;
+        }
+
+        // Preenche as casas do meio com o valor 100
+        for (int i = 1; i < matriz.length - 1; i++) {
+            for (int j = 1; j < matriz[i].length - 1; j++) {
+                matriz[i][j] = 100;
+            }
+        }   
+
+
 
         // loop principal
         while (jogoAtivo) {
@@ -111,7 +125,29 @@ public class App {
 
             int novaPosicao = players[jogadorDaVez].pos + somaDados;
             if (novaPosicao >= 40) {
-            players[jogadorDaVez].pos = 40;    
+            players[jogadorDaVez].pos = 40;
+            matriz[0][0] = 40;
+            //System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
+
+                System.out.println("\nEstado do tabuleiro:");
+                for (int i = 0; i < matriz.length; i++) {
+                    for (int j = 0; j < matriz[i].length; j++) {
+                        if (matriz[i][j] != 100) {
+                            System.out.print("{");
+                                for (int z = 0; z < numPlayers; z++) {
+                                    if (matriz[i][j] == players[z].pos) {
+                                        String nome = players[z].cor;
+                                        System.out.print(nome);
+                                    }
+                                }
+                        System.out.print("}       ");
+                    } else {
+                        System.out.print("         "); // Espaço para alinhamento
+                    }
+                }
+                System.out.println(); // Quebra de linha
+                }
+
             System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
             for (int x = 0; x <= (numPlayers-1); x++){
                 System.out.println("Jogador " + (x+1) + ", Cor: " + players[x].cor + ", Fez: " + players[x].jogadas + " Jogadas, Posição: " + players[x].pos);
@@ -163,45 +199,31 @@ public class App {
                 players[jogadorDaVez].pos = players[ok].pos;
                 players[ok].pos = wow;
             }
-
-
-
-
-
             players[jogadorDaVez].pos = novaPosicao;
 
+            System.out.println("\nEstado do tabuleiro:");
+                for (int i = 0; i < matriz.length; i++) {
+                    for (int j = 0; j < matriz[i].length; j++) {
+                        if (matriz[i][j] != 100) {
+                            System.out.print("{");
+                                for (int z = 0; z < numPlayers; z++) {
+                                    if (matriz[i][j] == players[z].pos) {
+                                        String nome = players[z].cor;
+                                        System.out.print(nome);
+                                    }
+                                }
+                        System.out.print("}       ");
+                    } else {
+                        System.out.print("         "); // Espaço para alinhamento
+                    }
+                }
+                System.out.println(); // Quebra de linha
+                }
+    
 
-              
 
 
-            //atualiza e mostra a matriz
-     //       for (int i = 0; i < matriz.length; i++) {
-    //            for (int j = 0; j < matriz[i].length; j++) {
-    //                matriz[i][j] = (i == 0 || i == matriz.length - 1 || j == 0 || j == matriz[i].length - 1) ? 1 : 0;
-    //            }
-    //        }
-            // add jogadores na matriz
-     //       for (int i = 0; i < numPlayers; i++) {
-    //            int x = (players[i].pos % 10) + 1;
-    //            int y = (players[i].pos / 10) + 1;
-    //            if (x < matriz.length && y < matriz[0].length) {
-   //                 matriz[y][x] = i + 2; //add um valor fixo p cada jogador
-   //             }
-          //  }
-  ////          System.out.println("\nEstado do tabuleiro:");
-    //        for (int i = 0; i < matriz.length; i++) {
-  //              for (int j = 0; j < matriz[i].length; j++) {
-    //                if (matriz[i][j] == 1) {
-    //                    System.out.print("{}       "); // casa de borda
-   //                 } else if (matriz[i][j] > 1) {
-   //                     int playerId = matriz[i][j] - 2;
-  ///                      System.out.print("{" + players[playerId].cor + "}  "); // casa ocupada por um jogador
-   //                 } else {
-   //                     System.out.print("         "); // casa vazia
-    //                }
-     //           }
-      //          System.out.println();
-     //       }
+
             System.out.println("Jogador " + (jogadorDaVez + 1) + " agora está na posição " + players[jogadorDaVez].pos);
      }
         scanner.close();
