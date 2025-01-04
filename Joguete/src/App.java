@@ -345,9 +345,8 @@ public class App {
         String seis = "6";
         Player[] players;
         boolean debug = false;
-        boolean modoRapido = false; // Flag para controlar o modo rápido
+        boolean modoRapido = false;
 
-        // Escolha do número de jogadores e modo de debug
         while (true) {
             System.out.println("Digite quantos players irão jogar, de 3 a 6:");
             nhac = scanner.next();
@@ -395,7 +394,7 @@ public class App {
             System.out.println("\nJogador " + (i + 1) + " criado com cor " + players[i].cor);
         }
 
-        int jogadorDaVez = random.nextInt(numPlayers); // Define jogador da vez aleatoriamente
+        int jogadorDaVez = random.nextInt(numPlayers);
 
         System.out.println("\nPressione Enter para iniciar o jogo:");
         scanner.nextLine(); // Limpa o buffer
@@ -437,7 +436,6 @@ public class App {
             }
         }
 
-        // Mostra o estado inicial do tabuleiro
         if (!modoRapido) {
             System.out.println("\nEstado inicial do tabuleiro:");
             for (int i = 0; i < matriz.length; i++) {
@@ -448,7 +446,7 @@ public class App {
                         for (int z = 0; z < numPlayers; z++) {
                             if (matriz[i][j] == players[z].pos) {
                                 if (colorsInCell.length() > 0) {
-                                    colorsInCell.append(","); // Adiciona vírgula entre as cores
+                                    colorsInCell.append(",");
                                 }
                                 colorsInCell.append(players[z].cor);
                             }
@@ -460,17 +458,16 @@ public class App {
                         System.out.print(repeat(" ", maxLength + 2)); // Espaço para células com valor 100
                     }
                 }
-                System.out.println(); // Quebra de linha
+                System.out.println();
             }
         }
 
-        // Espera o jogador pressionar Enter para iniciar o jogo
-        scanner.nextLine(); // Limpa o buffer
-        scanner.nextLine(); // Espera o usuário apertar Enter para começar
+        scanner.nextLine(); 
+        scanner.nextLine(); 
 
         // Loop principal
         while (jogoAtivo) {
-            // Exibe o estado do tabuleiro sempre que for a vez de um jogador
+        
             if (!modoRapido) {
                 System.out.println("\nVez da Rodada: Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ")!");
                 scanner.nextLine(); // Aguarda o jogador pressionar Enter
@@ -531,7 +528,6 @@ public class App {
 
                 players[jogadorDaVez].pos = novaPosicao;
 
-                // Atualiza e mostra o estado do tabuleiro
                 System.out.println("\nEstado do tabuleiro após a rodada:");
                 for (int i = 0; i < matriz.length; i++) {
                     for (int j = 0; j < matriz[i].length; j++) {
@@ -541,8 +537,7 @@ public class App {
                             for (int z = 0; z < numPlayers; z++) {
                                 if (matriz[i][j] == players[z].pos) {
                                     if (colorsInCell.length() > 0) {
-                                        colorsInCell.append(","); // Adiciona vírgula entre as cores
-                                    }
+                                        colorsInCell.append(","); 
                                     colorsInCell.append(players[z].cor);
                                 }
                             }
@@ -553,11 +548,11 @@ public class App {
                             System.out.print(repeat(" ", maxLength + 2)); // Espaço para células com valor 100
                         }
                     }
-                    System.out.println(); // Quebra de linha
+                    System.out.println();
                 }
             }
 
-            // Alterna para o próximo jogador
+        
             jogadorDaVez = (jogadorDaVez + 1) % numPlayers;
         }
     }
