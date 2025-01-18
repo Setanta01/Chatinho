@@ -194,7 +194,7 @@ public class App {
                 //System.out.println("Parabéns, Jogador " + (jogadorDaVez + 1) + " (" + players[jogadorDaVez].cor + ") venceu! Com " + players[jogadorDaVez].jogadas + " Jogadas");
                 
                 System.out.println("O que você deseja escolher? (Pressione Enter)");
-                System.out.println("1 - Jogar vendo o tabuleiro");
+                System.out.println("1 - Ver resultado do jogo");
                 System.out.println("2 - Continuar jogando");
                 int choice = scanner.nextInt();
                 scanner.nextLine(); 
